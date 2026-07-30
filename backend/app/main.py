@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 
-from app.api.routes import health
+from app.api.routes import health, meetings
 
 
 def create_app() -> FastAPI:
@@ -12,6 +12,7 @@ def create_app() -> FastAPI:
     )
 
     app.include_router(health.router)
+    app.include_router(meetings.router)
 
     return app
 
