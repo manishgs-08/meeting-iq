@@ -2,3 +2,5 @@ fastapi==0.115.12
 uvicorn==0.34.3
 python-multipart==0.0.20
 openai-whisper==20240930
+google-genai==0.3.0
+python-dotenv==1.0.1

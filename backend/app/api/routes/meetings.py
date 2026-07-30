@@ -9,6 +9,7 @@ from pathlib import Path
 from fastapi import APIRouter, UploadFile, File, HTTPException
 
 from app.services.transcription import transcribe_audio
+from app.services.analysis import analyze_transcript
 from app.utils.file_validation import validate_audio_file
 
 router = APIRouter(prefix="/meetings", tags=["meetings"])
@@ -48,9 +49,17 @@ async def analyze_meeting(file: UploadFile = File(...)):
             detail=str(e),
         )
 
+    try:
+        analysis = analyze_transcript(transcript)
+    except RuntimeError as e:
+        raise HTTPException(
+            status_code=500,
+            detail=str(e),
+        )
+
     return {
-        "message": "Transcription completed successfully",
         "filename": file.filename,
         "transcript": transcript,
+        "analysis": analysis.model_dump(),
     }
 
