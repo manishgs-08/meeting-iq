@@ -173,7 +173,7 @@ export default function AudioUploader({
               <div
                 className={`
                   rounded-full p-4 transition-colors duration-300
-                  ${isDragOver ? "bg-accent/20 text-accent-hover" : "bg-surface-raised text-slate-400"}
+                  ${isDragOver ? "bg-accent/20 text-accent-hover" : "bg-surface-raised text-text-secondary"}
                 `}
               >
                 <svg
@@ -193,10 +193,10 @@ export default function AudioUploader({
               </div>
 
               <div>
-                <p className="text-slate-200 font-medium text-lg">
+                <p className="text-text-primary font-medium text-lg">
                   Drag & drop your audio file here
                 </p>
-                <p className="text-slate-400 text-sm mt-1">
+                <p className="text-text-secondary text-sm mt-1">
                   or{" "}
                   <span className="text-accent-hover underline underline-offset-2">
                     click to browse
@@ -204,7 +204,7 @@ export default function AudioUploader({
                 </p>
               </div>
 
-              <p className="text-slate-500 text-xs">
+              <p className="text-text-muted text-xs">
                 Supported: {SUPPORTED_FORMATS_DISPLAY}
               </p>
             </div>
@@ -231,10 +231,10 @@ export default function AudioUploader({
 
               {/* File info */}
               <div className="flex-1 min-w-0">
-                <p className="text-slate-200 font-medium truncate">
+                <p className="text-text-primary font-medium truncate">
                   {selectedFile.name}
                 </p>
-                <p className="text-slate-400 text-sm">
+                <p className="text-text-secondary text-sm">
                   {formatFileSize(selectedFile.size)}
                 </p>
               </div>
@@ -247,8 +247,8 @@ export default function AudioUploader({
                   handleRemoveFile();
                 }}
                 disabled={isProcessing}
-                className="flex-shrink-0 rounded-lg p-2 text-slate-400 hover:text-red-400 hover:bg-red-400/10
-                           disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:text-slate-400 disabled:hover:bg-transparent
+                className="flex-shrink-0 rounded-lg p-2 text-text-muted hover:text-error hover:bg-error-muted
+                           disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:text-text-muted disabled:hover:bg-transparent
                            transition-colors duration-200"
                 aria-label="Remove selected file"
               >
@@ -284,14 +284,14 @@ export default function AudioUploader({
 
         {/* Validation error */}
         {validationError && (
-          <p className="mt-3 text-sm text-red-400 text-center" role="alert">
+          <p className="mt-3 text-sm text-error text-center" role="alert">
             {validationError}
           </p>
         )}
 
         {/* API error */}
         {apiError && (
-          <p className="mt-3 text-sm text-red-400 text-center" role="alert">
+          <p className="mt-3 text-sm text-error text-center" role="alert">
             {apiError}
           </p>
         )}

@@ -36,7 +36,7 @@ export default function LoadingOverlay() {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-surface-overlay/80 backdrop-blur-sm"
       role="status"
       aria-live="polite"
       aria-label="Analyzing your meeting"
@@ -44,16 +44,16 @@ export default function LoadingOverlay() {
       <div className="w-full max-w-md mx-4 rounded-2xl bg-surface-raised border border-border-subtle p-8 shadow-2xl">
         {/* Spinner */}
         <div className="flex justify-center mb-6">
-          <div className="h-10 w-10 rounded-full border-3 border-slate-600 border-t-accent animate-spin" />
+          <div className="h-10 w-10 rounded-full border-3 border-border-subtle border-t-accent animate-spin" />
         </div>
 
         {/* Title */}
-        <h2 className="text-xl font-semibold text-slate-100 text-center">
+        <h2 className="text-xl font-semibold text-text-primary text-center">
           Analyzing your meeting
         </h2>
 
         {/* Timing hint */}
-        <p className="mt-2 text-sm text-slate-400 text-center">
+        <p className="mt-2 text-sm text-text-secondary text-center">
           This usually takes 10–30 seconds.
         </p>
 
@@ -72,13 +72,13 @@ export default function LoadingOverlay() {
         {/* Rotating message */}
         <p
           key={messageIndex}
-          className="mt-6 text-sm text-slate-400 text-center italic animate-pulse"
+          className="mt-6 text-sm text-text-secondary text-center italic animate-pulse"
         >
           {ROTATING_MESSAGES[messageIndex]}
         </p>
 
         {/* Larger recordings note */}
-        <p className="mt-4 text-xs text-slate-500 text-center">
+        <p className="mt-4 text-xs text-text-muted text-center">
           Larger recordings may take longer.
         </p>
       </div>
