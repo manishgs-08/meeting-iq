@@ -17,30 +17,31 @@ export default function ConfidenceIndicator({ score }: ConfidenceIndicatorProps)
     colorClass = "text-warning";
     bgClass = "bg-warning";
     badgeBg = "bg-warning-muted";
-    label = "Average";
+    label = "Medium";
   }
 
   return (
-    <div className="flex flex-col gap-2.5 w-44">
+    <div className="flex flex-col gap-3 w-full sm:w-48">
       {/* Label */}
-      <span className="text-xs font-semibold uppercase tracking-wider text-text-muted">
+      <span className="text-xs font-bold uppercase tracking-wider text-text-muted">
         Confidence
       </span>
 
-      {/* Badge + Score */}
-      <div className="flex items-center gap-2">
+      {/* Badge + Percentage */}
+      <div className="flex items-center gap-3">
         <span
-          className={`inline-flex items-center px-2 py-0.5 rounded-md text-xs font-bold uppercase tracking-wide ${colorClass} ${badgeBg}`}
+          className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-bold uppercase tracking-wide ${colorClass} ${badgeBg}`}
         >
+          <span className={`w-2 h-2 rounded-full ${bgClass}`} aria-hidden="true" />
           {label}
         </span>
-        <span className="text-xl font-bold text-text-primary tracking-tight">
+        <span className="text-2xl font-extrabold text-text-primary tracking-tight">
           {score}%
         </span>
       </div>
 
-      {/* Progress bar */}
-      <div className="w-full bg-surface-overlay h-1.5 rounded-full overflow-hidden">
+      {/* Progress Bar */}
+      <div className="w-full bg-surface-overlay h-2 rounded-full overflow-hidden shadow-inner">
         <div
           className={`h-full rounded-full ${bgClass} transition-all duration-500`}
           style={{ width: `${score}%` }}

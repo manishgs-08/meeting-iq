@@ -28,7 +28,7 @@ export default function Dashboard({ result, onReset }: DashboardProps) {
 
   return (
     <div className="w-full max-w-[1400px] mx-auto flex flex-col gap-8 md:gap-10 pb-24 animate-in fade-in duration-500 px-4 sm:px-6 lg:px-8 pt-2">
-      {/* Header */}
+      {/* 1. Meeting Header */}
       <DashboardHeader
         filename={filename}
         completionTime={completionTime}
@@ -39,22 +39,27 @@ export default function Dashboard({ result, onReset }: DashboardProps) {
       {/* Separator */}
       <hr className="border-border-subtle" />
 
-      {/* Main Content Layout */}
+      {/* 2 & 3. Highest Priority: Meeting Tasks (Full Width for Maximum Impact) */}
+      <MeetingTasks
+        actionItems={analysis.action_items}
+        deadlines={analysis.deadlines}
+        pendingDecisions={analysis.pending_decisions}
+      />
+
+      {/* 4, 5 & 6. Secondary Content: Executive Summary + Insights & Risk Sidebar */}
       <div className="flex flex-col xl:flex-row gap-6 lg:gap-8 items-start">
-        {/* Main Column */}
+        {/* Main Column: Executive Summary */}
         <div className="flex flex-col gap-6 lg:gap-8 w-full xl:w-2/3">
           <ExecutiveSummaryHero
             summary={analysis.executive_summary}
             detailedSummary={analysis.detailed_summary}
-          />
-          <MeetingTasks
-            actionItems={analysis.action_items}
-            deadlines={analysis.deadlines}
-            pendingDecisions={analysis.pending_decisions}
+            goals={analysis.goals}
+            constraints={analysis.constraints}
+            risks={analysis.risks}
           />
         </div>
 
-        {/* Sidebar */}
+        {/* Sidebar Column: Insights & Requirements + Risk Assessment */}
         <div className="flex flex-col gap-6 lg:gap-8 w-full xl:w-1/3 xl:sticky xl:top-24">
           <InsightsGroup
             goals={analysis.goals}
@@ -65,7 +70,7 @@ export default function Dashboard({ result, onReset }: DashboardProps) {
         </div>
       </div>
 
-      {/* Transcript (Full Width, Low Priority) */}
+      {/* 7. Supporting Content: Transcript */}
       <CollapsibleTranscript transcript={transcript} />
     </div>
   );

@@ -11,19 +11,16 @@ export default function CollapsibleTranscript({
 
   return (
     <section
-      className="rounded-2xl border border-border-subtle bg-surface-raised p-6 md:p-8 flex flex-col gap-6 transition-shadow duration-200 shadow-sm"
+      className="rounded-xl border border-border-subtle/80 bg-surface/50 p-5 md:p-6 flex flex-col gap-4 transition-all duration-200"
       aria-labelledby="transcript-heading"
     >
       <div className="flex items-center justify-between gap-4">
-        <h2
-          id="transcript-heading"
-          className="text-lg md:text-xl font-semibold text-text-primary flex items-center gap-2"
-        >
+        <div className="flex items-center gap-2">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 20 20"
             fill="currentColor"
-            className="w-5 h-5 opacity-70"
+            className="w-4 h-4 text-text-muted opacity-70"
             aria-hidden="true"
           >
             <path
@@ -32,21 +29,26 @@ export default function CollapsibleTranscript({
               clipRule="evenodd"
             />
           </svg>
-          Full Transcript
-        </h2>
-        
+          <h2
+            id="transcript-heading"
+            className="text-sm font-semibold text-text-muted uppercase tracking-wider"
+          >
+            Raw Transcript
+          </h2>
+        </div>
+
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="text-sm font-medium text-text-secondary hover:text-text-primary transition-colors flex items-center gap-1.5 min-h-[44px] px-2 rounded-lg"
+          className="text-xs font-semibold text-text-muted hover:text-text-primary transition-colors flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-raised border border-border-subtle hover:border-border-strong min-h-[32px]"
           aria-expanded={isOpen}
           aria-controls="transcript-content"
         >
-          {isOpen ? "Hide Transcript" : "Show Transcript"}
+          <span>{isOpen ? "Hide Transcript" : "Show Full Transcript"}</span>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 20 20"
             fill="currentColor"
-            className={`w-4 h-4 transition-transform duration-200 ${
+            className={`w-3.5 h-3.5 transition-transform duration-200 ${
               isOpen ? "rotate-180" : ""
             }`}
             aria-hidden="true"
@@ -61,9 +63,9 @@ export default function CollapsibleTranscript({
       </div>
 
       {isOpen && (
-        <div 
+        <div
           id="transcript-content"
-          className="text-text-secondary leading-relaxed md:leading-loose text-sm md:text-base whitespace-pre-wrap font-mono bg-surface-overlay p-6 md:p-8 rounded-xl border border-border-subtle max-w-3xl"
+          className="text-text-secondary leading-relaxed text-xs md:text-sm whitespace-pre-wrap font-mono bg-surface-overlay/80 p-5 rounded-lg border border-border-subtle max-h-96 overflow-y-auto"
         >
           {transcript || "No transcript available."}
         </div>
