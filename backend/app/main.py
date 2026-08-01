@@ -3,6 +3,7 @@ load_dotenv()
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+import os
 
 from app.api.routes import health, meetings
 
@@ -15,9 +16,12 @@ def create_app() -> FastAPI:
         version="0.1.0",
     )
 
+    allowed_origins_str = os.getenv("ALLOWED_ORIGINS", "http://localhost:5173")
+    allowed_origins = [origin.strip() for origin in allowed_origins_str.split(",")]
+
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=["http://localhost:5173"],
+        allow_origins=allowed_origins,
         allow_methods=["GET", "POST"],
         allow_headers=["*"],
     )

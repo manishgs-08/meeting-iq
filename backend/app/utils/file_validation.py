@@ -43,6 +43,13 @@ def validate_audio_file(file: UploadFile) -> str:
             detail="A filename must be provided.",
         )
 
+    MAX_SIZE = 25 * 1024 * 1024
+    if file.size is not None and file.size > MAX_SIZE:
+        raise HTTPException(
+            status_code=413,
+            detail="File too large. Maximum size is 25MB.",
+        )
+
     extension = get_file_extension(file.filename)
 
     if extension not in ALLOWED_AUDIO_EXTENSIONS:

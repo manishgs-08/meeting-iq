@@ -31,35 +31,49 @@ async def analyze_meeting(file: UploadFile = File(...)):
     file_path = UPLOADS_DIR / file.filename
 
     try:
-        with file_path.open("wb") as buffer:
-            shutil.copyfileobj(file.file, buffer)
-    except Exception as e:
-        raise HTTPException(
-            status_code=500,
-            detail=f"Failed to save uploaded file: {str(e)}",
-        )
+        try:
+            with file_path.open("wb") as buffer:
+                shutil.copyfileobj(file.file, buffer)
+        except Exception as e:
+            raise HTTPException(
+                status_code=500,
+                detail=f"Failed to save uploaded file: {str(e)}",
+            )
+        finally:
+            await file.close()
+
+        MAX_SIZE = 25 * 1024 * 1024
+        if file_path.stat().st_size > MAX_SIZE:
+            raise HTTPException(
+                status_code=413,
+                detail="File too large. Maximum size is 25MB.",
+            )
+
+        try:
+            transcript = transcribe_audio(file_path)
+        except RuntimeError as e:
+            raise HTTPException(
+                status_code=500,
+                detail=str(e),
+            )
+
+        try:
+            analysis = analyze_transcript(transcript)
+        except RuntimeError as e:
+            raise HTTPException(
+                status_code=500,
+                detail=str(e),
+            )
+
+        return {
+            "filename": file.filename,
+            "transcript": transcript,
+            "analysis": analysis.model_dump(),
+        }
     finally:
-        await file.close()
-
-    try:
-        transcript = transcribe_audio(file_path)
-    except RuntimeError as e:
-        raise HTTPException(
-            status_code=500,
-            detail=str(e),
-        )
-
-    try:
-        analysis = analyze_transcript(transcript)
-    except RuntimeError as e:
-        raise HTTPException(
-            status_code=500,
-            detail=str(e),
-        )
-
-    return {
-        "filename": file.filename,
-        "transcript": transcript,
-        "analysis": analysis.model_dump(),
-    }
+        if file_path.exists():
+            try:
+                file_path.unlink()
+            except Exception:
+                pass
 

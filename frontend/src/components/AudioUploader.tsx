@@ -94,6 +94,16 @@ export default function AudioUploader({
       return;
     }
 
+    const MAX_SIZE = 25 * 1024 * 1024; // 25 MB
+    if (file.size > MAX_SIZE) {
+      setAppError({
+        title: "File Too Large",
+        body: "The uploaded recording exceeds the 25 MB limit.\n\nPlease upload a smaller file."
+      });
+      setSelectedFile(null);
+      return;
+    }
+
     setAppError(null);
     setSelectedFile(file);
   }, []);
