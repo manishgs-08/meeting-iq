@@ -11,6 +11,7 @@ function InsightGroupBlock({
   accentColor,
   accentBg,
   badgeBg,
+  borderColor,
   icon,
 }: {
   title: string;
@@ -19,14 +20,15 @@ function InsightGroupBlock({
   accentColor: string;
   accentBg: string;
   badgeBg: string;
+  borderColor: string;
   icon: React.ReactNode;
 }) {
   const isEmpty = !items || items.length === 0;
 
   return (
-    <div className="rounded-xl border border-border-subtle bg-surface p-5 shadow-xs flex flex-col gap-3 transition-all duration-200 hover:border-border-strong/50">
+    <div className={`rounded-xl border ${borderColor} bg-surface p-4 shadow-xs flex flex-col gap-2 transition-all duration-200 hover:border-border-strong/50`}>
       {/* Block Header */}
-      <div className="flex items-center justify-between gap-2 pb-2.5 border-b border-border-subtle/70">
+      <div className="flex items-center justify-between gap-2 pb-2 border-b border-border-subtle/70">
         <div className="flex items-center gap-2">
           <span className={`p-1.5 rounded-md ${badgeBg} ${accentColor}`} aria-hidden="true">
             {icon}
@@ -44,14 +46,14 @@ function InsightGroupBlock({
       {isEmpty ? (
         <p className="text-xs text-text-muted italic py-1">{emptyMessage}</p>
       ) : (
-        <ul className="flex flex-col gap-2.5 pt-1">
+        <ul className="flex flex-col gap-1.5 pt-1">
           {items.map((item, index) => (
             <li
               key={index}
-              className="flex items-start gap-2.5 text-sm text-text-primary leading-relaxed"
+              className="flex items-start gap-2.5 text-base text-text-primary leading-relaxed"
             >
               <span
-                className={`flex-shrink-0 mt-1.5 w-1.5 h-1.5 rounded-full ${accentBg}`}
+                className={`flex-shrink-0 mt-2.5 w-1.5 h-1.5 rounded-full ${accentBg}`}
                 aria-hidden="true"
               />
               <span>{item}</span>
@@ -70,7 +72,7 @@ export default function InsightsGroup({
 }: InsightsGroupProps) {
   return (
     <section
-      className="rounded-2xl border border-border-subtle bg-surface-raised p-6 md:p-8 shadow-sm flex flex-col gap-6"
+      className="rounded-2xl border border-border-subtle bg-surface-raised p-6 md:p-8 shadow-sm flex flex-col gap-4"
       aria-labelledby="insights-heading"
     >
       <div className="flex items-center justify-between">
@@ -93,12 +95,13 @@ export default function InsightsGroup({
           accentColor="text-category-goals"
           accentBg="bg-category-goals"
           badgeBg="bg-category-goals-muted"
+          borderColor="border-category-goals/30"
           icon={
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 20 20"
               fill="currentColor"
-              className="w-4 h-4"
+              className="w-5 h-5"
             >
               <path
                 fillRule="evenodd"
@@ -117,12 +120,13 @@ export default function InsightsGroup({
           accentColor="text-category-requirements"
           accentBg="bg-category-requirements"
           badgeBg="bg-category-requirements-muted"
+          borderColor="border-category-requirements/30"
           icon={
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 20 20"
               fill="currentColor"
-              className="w-4 h-4"
+              className="w-5 h-5"
             >
               <path
                 fillRule="evenodd"
@@ -141,12 +145,13 @@ export default function InsightsGroup({
           accentColor="text-category-constraints"
           accentBg="bg-category-constraints"
           badgeBg="bg-category-constraints-muted"
+          borderColor="border-warning/30"
           icon={
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 20 20"
               fill="currentColor"
-              className="w-4 h-4"
+              className="w-5 h-5"
             >
               <path
                 fillRule="evenodd"

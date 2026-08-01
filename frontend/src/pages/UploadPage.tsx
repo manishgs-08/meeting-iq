@@ -2,7 +2,6 @@ import { useState } from "react";
 import AudioUploader from "../components/AudioUploader";
 import Dashboard from "../components/dashboard/Dashboard";
 import type { AnalyzeResponse } from "../types/meeting";
-import { mockAnalysisResult, mockEmptyResult } from "../mockData";
 
 export default function UploadPage() {
   const [analysisResult, setAnalysisResult] = useState<AnalyzeResponse | null>(
@@ -48,11 +47,6 @@ export default function UploadPage() {
             {/* Uploader */}
             <AudioUploader onAnalysisComplete={handleAnalysisComplete} />
 
-            {/* TEST MOCKS */}
-            <div className="flex gap-4">
-              <button onClick={() => setAnalysisResult(mockAnalysisResult)} className="bg-surface-raised border border-border-subtle hover:bg-surface-overlay text-text-primary px-4 py-2 rounded text-sm transition-colors">Load Full Mock</button>
-              <button onClick={() => setAnalysisResult(mockEmptyResult)} className="bg-surface-raised border border-border-subtle hover:bg-surface-overlay text-text-primary px-4 py-2 rounded text-sm transition-colors">Load Empty Mock</button>
-            </div>
           </div>
         )}
       </div>

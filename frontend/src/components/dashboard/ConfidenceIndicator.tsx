@@ -28,14 +28,16 @@ export default function ConfidenceIndicator({ score }: ConfidenceIndicatorProps)
       </span>
 
       {/* Badge + Percentage */}
-      <div className="flex items-center gap-3">
-        <span
-          className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-bold uppercase tracking-wide ${colorClass} ${badgeBg}`}
-        >
-          <span className={`w-2 h-2 rounded-full ${bgClass}`} aria-hidden="true" />
-          {label}
-        </span>
-        <span className="text-2xl font-extrabold text-text-primary tracking-tight">
+      <div className="flex flex-col gap-1.5">
+        <div>
+          <span
+            className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-bold uppercase tracking-wide ${colorClass} ${badgeBg}`}
+          >
+            <span className={`w-2 h-2 rounded-full ${bgClass}`} aria-hidden="true" />
+            {label}
+          </span>
+        </div>
+        <span className="text-4xl font-extrabold text-text-primary tracking-tight">
           {score}%
         </span>
       </div>

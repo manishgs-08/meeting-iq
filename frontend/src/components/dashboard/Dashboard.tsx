@@ -48,7 +48,7 @@ export default function Dashboard({ result, onReset }: DashboardProps) {
 
       {/* 4, 5 & 6. Secondary Content: Executive Summary + Insights & Risk Sidebar */}
       <div className="flex flex-col xl:flex-row gap-6 lg:gap-8 items-start">
-        {/* Main Column: Executive Summary */}
+        {/* Main Column: Executive Summary & Insights */}
         <div className="flex flex-col gap-6 lg:gap-8 w-full xl:w-2/3">
           <ExecutiveSummaryHero
             summary={analysis.executive_summary}
@@ -57,15 +57,15 @@ export default function Dashboard({ result, onReset }: DashboardProps) {
             constraints={analysis.constraints}
             risks={analysis.risks}
           />
-        </div>
-
-        {/* Sidebar Column: Insights & Requirements + Risk Assessment */}
-        <div className="flex flex-col gap-6 lg:gap-8 w-full xl:w-1/3 xl:sticky xl:top-24">
           <InsightsGroup
             goals={analysis.goals}
             requirements={analysis.requirements}
             constraints={analysis.constraints}
           />
+        </div>
+
+        {/* Sidebar Column: Risk Assessment */}
+        <div className="flex flex-col gap-6 lg:gap-8 w-full xl:w-1/3">
           <RiskAssessment risks={analysis.risks} />
         </div>
       </div>

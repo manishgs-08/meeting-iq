@@ -119,7 +119,7 @@ export default function ExecutiveSummaryHero({
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 20 20"
               fill="currentColor"
-              className={`w-4 h-4 transition-transform duration-200 ${
+              className={`w-5 h-5 transition-transform duration-200 ${
                 showDetails ? "rotate-180" : ""
               }`}
               aria-hidden="true"

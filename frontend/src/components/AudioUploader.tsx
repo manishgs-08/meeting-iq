@@ -23,6 +23,51 @@ function getExtension(filename: string): string {
   return filename.slice(dotIndex + 1).toLowerCase();
 }
 
+/** Map generic or raw backend errors to user-friendly messages. */
+function parseError(error: unknown): { title: string; body: string } {
+  const msg = error instanceof Error ? error.message.toLowerCase() : String(error).toLowerCase();
+  
+  if (
+    msg.includes("connectionerror") ||
+    msg.includes("nameresolutionerror") ||
+    msg.includes("httpsconnectionpool") ||
+    msg.includes("failed to resolve host") ||
+    msg.includes("network unreachable") ||
+    msg.includes("failed to fetch")
+  ) {
+    return {
+      title: "No Internet Connection",
+      body: "MeetingIQ couldn't reach the AI service.\n\nPlease check your internet connection and try again."
+    };
+  }
+
+  if (msg.includes("timeout") || msg.includes("timed out") || msg.includes("504")) {
+    return {
+      title: "Request Timed Out",
+      body: "The meeting took longer than expected to process.\n\nPlease try again."
+    };
+  }
+
+  if (msg.includes("503") || msg.includes("502") || msg.includes("unavailable") || msg.includes("gemini api")) {
+    return {
+      title: "AI Service Unavailable",
+      body: "The analysis service is temporarily unavailable.\n\nPlease try again later."
+    };
+  }
+
+  if (msg.includes("unsupported") || msg.includes("format") || msg.includes("audio")) {
+    return {
+      title: "Unsupported Audio File",
+      body: "We couldn't process this recording.\n\nPlease upload a supported audio format."
+    };
+  }
+
+  return {
+    title: "Something Went Wrong",
+    body: "We couldn't analyze your meeting.\n\nPlease try again."
+  };
+}
+
 interface AudioUploaderProps {
   onAnalysisComplete?: (result: AnalyzeResponse) => void;
 }
@@ -32,9 +77,8 @@ export default function AudioUploader({
 }: AudioUploaderProps) {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isDragOver, setIsDragOver] = useState<boolean>(false);
-  const [validationError, setValidationError] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState<boolean>(false);
-  const [apiError, setApiError] = useState<string | null>(null);
+  const [appError, setAppError] = useState<{ title: string; body: string } | null>(null);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -42,15 +86,15 @@ export default function AudioUploader({
     const ext = getExtension(file.name);
 
     if (!ext || !SUPPORTED_AUDIO_EXTENSIONS.has(ext)) {
-      setValidationError(
-        `Unsupported format: .${ext || "(none)"}. Supported: ${SUPPORTED_FORMATS_DISPLAY}`
-      );
+      setAppError({
+        title: "Unsupported Audio File",
+        body: "We couldn't process this recording.\n\nPlease upload a supported audio format."
+      });
       setSelectedFile(null);
       return;
     }
 
-    setValidationError(null);
-    setApiError(null);
+    setAppError(null);
     setSelectedFile(file);
   }, []);
 
@@ -98,8 +142,7 @@ export default function AudioUploader({
 
   const handleRemoveFile = useCallback((): void => {
     setSelectedFile(null);
-    setValidationError(null);
-    setApiError(null);
+    setAppError(null);
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
@@ -109,17 +152,13 @@ export default function AudioUploader({
     if (!selectedFile || isProcessing) return;
 
     setIsProcessing(true);
-    setApiError(null);
+    setAppError(null);
 
     try {
       const result: AnalyzeResponse = await analyzeMeeting(selectedFile);
       onAnalysisComplete?.(result);
     } catch (error) {
-      const message =
-        error instanceof Error
-          ? error.message
-          : "An unexpected error occurred.";
-      setApiError(message);
+      setAppError(parseError(error));
     } finally {
       setIsProcessing(false);
     }
@@ -282,18 +321,37 @@ export default function AudioUploader({
           />
         </div>
 
-        {/* Validation error */}
-        {validationError && (
-          <p className="mt-3 text-sm text-error text-center" role="alert">
-            {validationError}
-          </p>
-        )}
-
-        {/* API error */}
-        {apiError && (
-          <p className="mt-3 text-sm text-error text-center" role="alert">
-            {apiError}
-          </p>
+        {/* Error Alert Card */}
+        {appError && (
+          <div
+            className="mt-6 flex gap-4 p-4 md:p-5 rounded-2xl bg-error-muted border border-error/20 animate-in fade-in slide-in-from-bottom-2 shadow-sm"
+            role="alert"
+            aria-live="assertive"
+          >
+            <div className="flex-shrink-0 mt-0.5">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6 text-error"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+                aria-hidden="true"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                />
+              </svg>
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <h3 className="font-bold text-error text-base">{appError.title}</h3>
+              <p className="text-sm text-error opacity-90 whitespace-pre-wrap leading-relaxed">
+                {appError.body}
+              </p>
+            </div>
+          </div>
         )}
 
         {/* Analyze button */}
