@@ -9,9 +9,9 @@ build/
 uploads/
 *.wav
 *.mp3
-MeetingIQ.*.pdf
-MeetingIQ.*.md
-MeetingIQ.*.txt
+MeetingIQ*.pdf
+MeetingIQ*.md
+MeetingIQ*.txt
 .DS_Store
 .idea/
 .vscode/
