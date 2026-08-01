@@ -24,15 +24,14 @@ export default function Dashboard({ result, onReset }: DashboardProps) {
     );
   }, []);
 
-  const { analysis, transcript, filename } = result;
+  const { analysis, transcript } = result;
 
   return (
     <div className="w-full max-w-[1400px] mx-auto flex flex-col gap-8 md:gap-10 pb-24 animate-in fade-in duration-500 px-4 sm:px-6 lg:px-8 pt-2">
       {/* 1. Meeting Header */}
       <DashboardHeader
-        filename={filename}
+        result={result}
         completionTime={completionTime}
-        confidenceScore={analysis.confidence_score}
         onReset={onReset}
       />
 
