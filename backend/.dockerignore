@@ -1,0 +1,17 @@
+.env
+.env.*
+!.env.example
+venv/
+.venv/
+__pycache__/
+*.py[cod]
+*$py.class
+uploads/
+.git
+.DS_Store
+logs/
+.vscode/
+tests/
+Dockerfile
+docker-compose.yml
+requirements.txt.bak
